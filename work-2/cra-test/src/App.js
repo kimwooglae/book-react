@@ -1,11 +1,15 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import smallImage from './small.jpeg';
+import bigImage from './big.jpeg';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <img src={bigImage} alt="big"/>
+      <img src={smallImage} alt='small'/>
+        <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -16,7 +20,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          New UI Framwork,react!!
+          UI Framwork,react!!
         </a>
       </header>
     </div>
