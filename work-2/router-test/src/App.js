@@ -1,26 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+export default function App() {
+  useEffect(() => {
+    window.onpopstate = function(event) {
+      console.log(`2 window.onpopstate location: ${document.location}, state: ${event.state}`);
+    };
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={() => window.history.pushState('v1', '', '/page1')}>page1</button>
+      <button onClick={() => window.history.pushState('v2', '', '/page2')}>page2</button>
     </div>
   );
 }
-
-export default App;
