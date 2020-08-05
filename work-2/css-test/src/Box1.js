@@ -3,9 +3,9 @@ import './Box1.css';
 
 function Box({ size }) {
     if(size === 'big') {
-        return <button className="box big">큰 박스</button>
+        return <div className="box big">큰 박스</div>
     } else {
-        return <button className="box small">작은 박스</button>
+        return <div className="box small">작은 박스</div>
     }
 }
 export default Box;
