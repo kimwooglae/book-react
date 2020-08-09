@@ -21,13 +21,17 @@ function App() {
   );
 }
 
-let second = 0;
+let started = (new Date()).getTime();
+let called = 0;
 function update() {
-  second++;
+  called++;
+  let diffed = Math.round(((new Date()).getTime() - started)/1000);
   const element = (
     <div>
       <h1>안녕하세요~</h1>
-      <h2>지금까지 {second}초가 지났습니다.</h2>
+      <h2>지금까지 {diffed}초가 지났습니다.</h2>
+      <h2>지금까지 {called}번 호출되었습니다.</h2>
+      <h2>예상보다 {diffed - called}번 덜 호출되었습니다.</h2>
     </div>
   )
   ReactDOM.render(element, document.getElementById('root1'));
