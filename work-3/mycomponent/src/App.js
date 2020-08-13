@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MyComponent from './MyComponent';
+import MyComponent1 from './MyComponent1';
 
 function App() {
 
@@ -16,26 +17,36 @@ function App() {
   return (
     <div className="App">
       <MyComponent />
+      <MyComponent1 />
       <div id="root1"></div>
     </div>
   );
 }
 
 let started = (new Date()).getTime();
+let lastCalled = (new Date()).getTime();
+let intervalTime = [];
 let called = 0;
 function update() {
   called++;
+
   let diffed = Math.round(((new Date()).getTime() - started)/1000);
+  let interval = ((new Date()).getTime() - lastCalled);
+
+  intervalTime.push(interval);
+  lastCalled = (new Date()).getTime();
+
   const element = (
     <div>
       <h1>안녕하세요~</h1>
       <h2>지금까지 {diffed}초가 지났습니다.</h2>
       <h2>지금까지 {called}번 호출되었습니다.</h2>
       <h2>예상보다 {diffed - called}번 덜 호출되었습니다.</h2>
+  <div>{intervalTime.join("  ")}</div>
     </div>
   )
   ReactDOM.render(element, document.getElementById('root1'));
 }
 
-setInterval(update, 1000);
+//setInterval(update, 1000);
 export default App;
