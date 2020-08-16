@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import MyComponent from './MyComponent';
 import MyComponent1 from './MyComponent1';
+import WidthPrinter from './WidthPrinter';
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
     <div className="App">
       <MyComponent />
       <MyComponent1 />
+      <WidthPrinter />
       <div id="root1"></div>
     </div>
   );
