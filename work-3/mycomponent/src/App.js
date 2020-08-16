@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import MyComponent from './MyComponent';
 import MyComponent1 from './MyComponent1';
 import WidthPrinter from './WidthPrinter';
+import WidthPrinter1 from './WidthPrinter1';
 
 function App() {
 
@@ -17,14 +18,31 @@ function App() {
 
   return (
     <div className="App">
+      <div>
+        <div>상단 메뉴</div>
+        <Profile username="mike" />
+        <div>하단 메뉴</div>
+      </div>
       <MyComponent />
       <MyComponent1 />
       <WidthPrinter />
+      <WidthPrinter1 />
       <div id="root1"></div>
     </div>
   );
 }
 
+function Profile({username}) {
+  return (
+    <div>
+      <Greeting username={username} />
+    </div>
+  )
+}
+
+function Greeting({username}) {
+  return <p>{`${username}님 안녕하세요.`}</p>
+}
 let started = (new Date()).getTime();
 let lastCalled = (new Date()).getTime();
 let intervalTime = [];
@@ -50,5 +68,5 @@ function update() {
   ReactDOM.render(element, document.getElementById('root1'));
 }
 
-//setInterval(update, 1000);
+setInterval(update, 1000);
 export default App;
