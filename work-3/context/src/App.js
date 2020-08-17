@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useDebugValue } from 'react';
 import Profile1 from './useReducer';
 
 const UserContext = React.createContext({username: '', helloCount: 0});
@@ -7,6 +7,7 @@ const ThemeContext = React.createContext('dark');
 
 function App() {
   const [user, setUser] = useState({username : 'mikke', helloCount: 0});
+  useDebugValue(user ? 'on' : 'off');
   return (
     <div>
       <ThemeContext.Provider value="dark">
