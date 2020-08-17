@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import Profile1 from './useReducer';
 
 const UserContext = React.createContext({username: '', helloCount: 0});
 const SetUserContext = React.createContext(() => {})
@@ -19,11 +20,51 @@ function App() {
       </ThemeContext.Provider>
       <input type="text" value={user.username} onChange={e => setUser({username: e.target.value})} />
       <Form/>
+
+      <Form1/>
+
+      <Form2/>
+      <><input></input>aa</>
+
+      <Profile1 />
     </div>
   );
 }
 
 export default App;
+
+function Form2() {
+  const inputRef = useRef();
+  const [showText, setShowText] = useState(true);
+
+  return (
+    <div>
+      {showText && <input type="text" ref={inputRef} />}
+      <button onClick={() => setShowText(!showText)}>텍스트 보이기/가리기</button>
+      <button onClick={() => inputRef.current && inputRef.current.focus()}>텍스트로 이동</button>
+    </div>
+  )
+}
+
+function Form1() {
+  const ININTIAL_TEXT = "가가";
+  const [text, setText] = useState(ININTIAL_TEXT);
+  const [showText, setShowText] = useState(true);
+  const setInitialText = useCallback(ref => ref && setText(ININTIAL_TEXT), []);
+  return (
+    <div>
+      {showText && (
+        <input
+          type="text" 
+          ref={setInitialText} 
+          value={text}
+          onChange={e => setText(e.target.value)}
+        />
+      )}
+      <button onClick={() => setShowText(!showText)}>보이기/가리기</button>
+    </div>
+  );
+}
 
 function TextInput({inputRef}) {
   return (
@@ -34,8 +75,16 @@ function TextInput({inputRef}) {
   )
 }
 
+const TextInput1 = React.forwardRef((props, ref) => (
+  <div>
+    <input type="text" ref={ref} />
+    <button>저장1</button>
+  </div>
+));
+
 function Form() {
   const inputRef = useRef();
+  const inputRef1 = useRef();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -44,6 +93,8 @@ function Form() {
     <div>
       <TextInput inputRef={inputRef} />
       <button onClick={() => inputRef.current.focus()}> 텍스트로 이동 </button>
+      <TextInput1 ref={inputRef1} />
+      <button onClick={() => inputRef1.current.focus()}> 텍스트로 이동(1) </button>
     </div>
   );
 }
