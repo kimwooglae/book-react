@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 const UserContext = React.createContext({username: '', helloCount: 0});
 const SetUserContext = React.createContext(() => {})
@@ -18,11 +18,35 @@ function App() {
         </SetUserContext.Provider>
       </ThemeContext.Provider>
       <input type="text" value={user.username} onChange={e => setUser({username: e.target.value})} />
+      <Form/>
     </div>
   );
 }
 
 export default App;
+
+function TextInput({inputRef}) {
+  return (
+    <div>
+      <input type="text" ref={inputRef} />
+      <button>저장</button>
+    </div>
+  )
+}
+
+function Form() {
+  const inputRef = useRef();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+  return (
+    <div>
+      <TextInput inputRef={inputRef} />
+      <button onClick={() => inputRef.current.focus()}> 텍스트로 이동 </button>
+    </div>
+  );
+}
 
 // function Profile() {
 //   return (
