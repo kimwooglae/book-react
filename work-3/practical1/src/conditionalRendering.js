@@ -7,5 +7,5 @@ function GreetingA({isLogin, name}) {
 }
 
 function GreetingB({isLogin, name}) {
-    return <p>{isLogin ? `${name}님 안녕하세요.` : `권한이 없습니다.`</p>
+    return <p>{isLogin ? `${name}님 안녕하세요.` : `권한이 없습니다.`}</p>;
 }

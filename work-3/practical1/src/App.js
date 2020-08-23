@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
+import MyComponent2 from './MouiseTracer';
+import MyComponent3 from './MountInfo';
 
 function App() {
   return (
-    <div><MyComponent1 /></div>
+    <div>
+      <MyComponent />
+      
+      <MyComponent1 />
+    
+      <MyComponent2 />
+
+      <MyComponent3 />
+    </div>
   );
 }
 

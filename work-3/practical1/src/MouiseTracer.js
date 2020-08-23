@@ -5,22 +5,27 @@ class MouseTracer extends React.Component {
         x: null,
         y: null
     };
-    onMouseMove = e => {
+
+    onMouseMove = (e) => {
         this.setState({
             x: e.clientX,
             y: e.clientY
         });
     };
+
     render() {
+        debugger;
         const { children } = this.props;
         const { x, y } = this.state;
-        return <div onMouseMove={this.onMouseMove}>{children({x, y})}</div>
+        return <div onMouseMove={this.onMouseMove}>{children({x, y})}</div>;
     }
 }
 
 
 export default function MyComonent() {
     return (
-        <MouseTracer >{({x, y }) => <p> {`(x, y): (${x}, ${y})`}</p>}</MouseTracer>
+        <MouseTracer >{({x, y}) => {
+            return <p> {`(x, y): (${x}, ${y})`}</p>;
+        }}</MouseTracer>
     )
 }
