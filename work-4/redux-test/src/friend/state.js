@@ -1,3 +1,13 @@
+import createItemLogic from '../common/createItemsLogic';
+
+const { add, remove, edit, reducer } = createItemLogic("friends");
+
+export const addFriend = add;
+export const removeFriend = remove;
+export const editFriend = edit;
+export default reducer;
+
+/*
 import createReducer from "../common/createReducer";
 
 const ADD = "friend/ADD";
@@ -26,3 +36,4 @@ const reducer = createReducer(INITIAL_STATE, {
 });
 
 export default reducer;
+*/
