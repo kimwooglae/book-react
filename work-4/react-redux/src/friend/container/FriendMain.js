@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 // import React, { useEffect, useReducer } from 'react';
 // import store from '../../common/store';
 import { getNextFriend } from '../../common/mockData';
@@ -10,19 +10,38 @@ import * as actions from '../state';
 
 import NumberSelect from '../component/NumberSelect';
 import { MAX_AGE_LIMIT, MAX_SHOW_LIMIT } from '../common';
+import { getShowLimit, makeGetFriendsWithAgeLimit } from '../state/selector';
 
-export default function FriendMain() {
-    const [
-        ageLimit, showLimit, friendsWithAgeLimit, friendsWithAgeShowLimit
-    ] = useSelector(state => {
-        const {friends, ageLimit, showLimit } = state.friend;
-        const friendsWithAgeLimit = friends.filter(
-            friend => friend.age <= ageLimit
-        );
-        return [
-            ageLimit, showLimit, friendsWithAgeLimit, friendsWithAgeLimit.slice(0, showLimit)
-        ]
-    })
+export default function FriendMain({ageLimit}) {
+    // const ageLimit = useSelector(getAgeLimit);
+    const getFriendsWithAgeLimit = useMemo(makeGetFriendsWithAgeLimit, []);
+    // const getFriendsWithAgeShowLimit = useMemo(makeGetFriendsWithAgeShowLimit, []);
+    const showLimit = useSelector(getShowLimit);
+    const friendsWithAgeLimit = useSelector(state => getFriendsWithAgeLimit(state, ageLimit));
+    // const friendsWithAgeShowLimit = useSelector(getFriendsWithAgeShowLimit);
+    // const [
+    //     ageLimit, showLimit, friendsWithAgeLimit, friendsWithAgeShowLimit
+    // ] = useSelector(
+    //     state => [
+    //         getAgeLimit(state),
+    //         getShowLimit(state),
+    //         getFriendsWithAgeLimit(state),
+    //         getFriendsWithAgeShowLimit(state)
+    //     ],
+    //     shallowEqual
+    // );
+
+    // const [
+    //     ageLimit, showLimit, friendsWithAgeLimit, friendsWithAgeShowLimit
+    // ] = useSelector(state => {
+    //     const {friends, ageLimit, showLimit } = state.friend;
+    //     const friendsWithAgeLimit = friends.filter(
+    //         friend => friend.age <= ageLimit
+    //     );
+    //     return [
+    //         ageLimit, showLimit, friendsWithAgeLimit, friendsWithAgeLimit.slice(0, showLimit)
+    //     ]
+    // }, shallowEqual);
 
     // const friends = useSelector(state => state.friend.friends);
     const dispatch = useDispatch();
@@ -63,7 +82,7 @@ export default function FriendMain() {
                 options={SHOW_LIMIT_OPTIONS}
                 postfix="명 이하만 보기 (연령 제한 적용)"
             />
-            <FriendList friends={friendsWithAgeShowLimit} />
+            {/* <FriendList friends={friendsWithAgeShowLimit} /> */}
         </div>
     );
 }
