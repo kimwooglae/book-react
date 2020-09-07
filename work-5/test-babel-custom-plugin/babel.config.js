@@ -1,2 +1,2 @@
-const plugins = ['./plugins/remove-log.js'];
+const plugins = ['./plugins/add-log.js'];
 module.exports = { plugins };

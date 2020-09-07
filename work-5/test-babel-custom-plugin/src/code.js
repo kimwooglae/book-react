@@ -5,5 +5,6 @@ function onClick(e) {
     const v = e.target.value;
 }
 function add(a, b) {
+    console.log('a','b');
     return a + b;
 }
