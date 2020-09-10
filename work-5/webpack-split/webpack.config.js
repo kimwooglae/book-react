@@ -5,7 +5,8 @@ module.exports = {
     entry: {
         // page1: './src/index1.js',
         // page2: './src/index2.js',
-        page3: './src/index3.js'
+        page3: './src/index3.js',
+        page4: './src/index4.js'
     },
     output: {
         filename: '[name].js',
