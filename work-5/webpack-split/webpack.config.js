@@ -14,23 +14,30 @@ module.exports = {
 
     },
     plugins: [new CleanWebpackPlugin()],
-    optimization: {
-        splitChunks: {
-            chunks: 'all',
-            minSize: 10,
-            cacheGroups: {
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    priority:2,
-                    name: 'vendor'
-                },
-                defaultVendors: {
-                    minChunks:1,
-                    priority:1,
-                    name: 'default'
-                }
-            }
-        }
-    },
+    // optimization: {
+    //     splitChunks: {
+    //         chunks: 'all',
+    //         minSize: 10,
+    //         cacheGroups: {
+    //             vendors: {
+    //                 test: /[\\/]node_modules[\\/]/,
+    //                 priority:2,
+    //                 name: 'vendor'
+    //             },
+    //             defaultVendors: {
+    //                 minChunks:1,
+    //                 priority:1,
+    //                 name: 'default'
+    //             },
+    //             reactBundle: {
+    //                 // test: /[\\/]node_modules[\\/]/,
+    //                 test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+    //                 name: 'react.bundle',
+    //                 priority: 3,
+    //                 minSize: 100
+    //             }
+    //         }
+    //     }
+    // },
     mode: 'production'
 }
