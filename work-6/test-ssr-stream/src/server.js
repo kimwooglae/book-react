@@ -8,6 +8,7 @@ import * as url from 'url';
 import { ServerStyleSheet } from 'styled-components';
 import { renderPage, prerenderPages } from './common';
 import lruCache from 'lru-cache';
+import { Transform } from 'stream';
 
 const ssrCache = new lruCache({
     max: 100,
@@ -22,6 +23,21 @@ for(const page of prerenderPages) {
         'utf8'
     );
     prerenderHtml[page] = pageHtml;
+}
+
+function createCacheStream(cacheKey, prefix, postfix) {
+    const chunks = [];
+    return new Transform({
+        transform(data, _, callback) {
+            chunks.push(data);
+            callback(null, data);
+        },
+        flush(callback) {
+            const data = [prefix, Buffer.concat(chunks).toString(), postfix];
+            ssrCache.set(cacheKey, data.join(''));
+            callback();
+        }
+    })
 }
 
 const html = fs
@@ -39,8 +55,9 @@ app.get('*', (req, res) => {
         return;
     }
 
-    const page = parsedUrl.pathname ? parsedUrl.pathname.substr(1) : 'home';
-
+    const page = parsedUrl.pathname && parsedUrl.pathname != '/' ? parsedUrl.pathname.substr(1) : 'home';
+    console.log("parsedUrl.pathname", parsedUrl.pathname);
+    console.log("page", page);
     const initialData = {page};
     const isPrerender = prerenderPages.includes(page);
     const result = (isPrerender ? prerenderHtml[page] : html).replace(
@@ -50,9 +67,12 @@ app.get('*', (req, res) => {
 
     if(isPrerender) {
         ssrCache.set(cacheKey, result);
+        console.log("isPrerender", cacheKey, isPrerender, result);
         res.send(result);
     } else {
-        const ROOT_TEXT = '<div id="ROOT">';
+        const ROOT_TEXT = '<div id="root">';
+
+        console.log("result", result);
         const prefix = result.substr(
             0,
             result.indexOf(ROOT_TEXT) + ROOT_TEXT.length
@@ -62,8 +82,12 @@ app.get('*', (req, res) => {
         const sheet = new ServerStyleSheet();
         const reactElement = sheet.collectStyles(<App page={page} />);
         const renderStream = sheet.interleaveWithNodeStream(renderToNodeStream(reactElement));
+        const cacheStream = createCacheStream(cacheKey, prefix, postfix);
+        cacheStream.pipe(res);
+
+
         renderStream.pipe(
-            res,
+            cacheStream,
             {end: false}
         );
         renderStream.on('end', () => {

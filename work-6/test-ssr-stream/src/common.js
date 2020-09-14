@@ -7,7 +7,7 @@ import { ServerStyleSheet } from 'styled-components';
 
 const html = fs.readFileSync(path.resolve(__dirname, '../dist/index.html'), 'utf8');
 
-export const prerenderPages = ['home'];
+export const prerenderPages = ['home', 'page'];
 
 export function renderPage(page) {
     const sheet = new ServerStyleSheet();
