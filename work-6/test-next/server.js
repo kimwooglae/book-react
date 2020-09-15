@@ -14,6 +14,20 @@ const ssrCache = new lruCache({
     maxAge: 1000*60
 })
 
+const fs = require('fs');
+const prerenderList = [
+    {name: 'page1', path: '/page1'},
+    {name: 'page2-hello', path: '/page2?text=hello'},
+    {name: 'page2-world', path: '/page2?text=world'}
+];
+const prerenderCache = {};
+if(!dev) {
+    for(const info of prerenderList) {
+        const { name, path } = info;
+        const html = fs.readFileSync(`./out/${name}.html`, 'utf8');
+        prerenderCache[path] = html;
+    }
+}
 
 app.prepare().then(() => {
     const server = express();
@@ -39,6 +53,11 @@ app.prepare().then(() => {
             res.send(ssrCache.get(cacheKey));
             return;
         }
+        if(prerenderCache.hasOwnProperty(cacheKey)) {
+            console.log("미리 랜더링한 HTML 사용");
+            res.send(prerenderCache[cacheKey]);
+            return;
+        }
         try {
             const {query, pathname} = parsedUrl;
             const html = await app.renderToHTML(req, res, pathname, query);
@@ -50,6 +69,26 @@ app.prepare().then(() => {
             app.renderError(err, req, res, pathname, query);
         }
     }
+
+    // async function renderAndCache(req, res) {
+    //     const parsedUrl = url.parse(req.url, true);
+    //     const cacheKey = parsedUrl.path;
+    //     if(ssrCache.has(cacheKey)) {
+    //         console.log("using cache");
+    //         res.send(ssrCache.get(cacheKey));
+    //         return;
+    //     }
+    //     try {
+    //         const {query, pathname} = parsedUrl;
+    //         const html = await app.renderToHTML(req, res, pathname, query);
+    //         if(res.statusCode === 200) {
+    //             ssrCache.set(cacheKey, html);
+    //         }
+    //         res.send(html);
+    //     } catch(err) {
+    //         app.renderError(err, req, res, pathname, query);
+    //     }
+    // }
 
     server.listen(port, err => {
         if(err) throw err;
