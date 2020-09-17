@@ -53,3 +53,10 @@ console.log('1 in Fruit', isValidEnumValue(Fruit, 1));
 console.log('5 in Fruit', isValidEnumValue(Fruit, 5));
 console.log('ko in Lang', isValidEnumValue(Lang, 'ko'))
 console.log('ko in Lang', isValidEnumValue(Lang, 'Korean'))
+
+const enum Language {
+    Korean = 'ko',
+    English = 'en'
+}
+
+let value:Language = Language.Korean;
